@@ -48,7 +48,10 @@ let textGen = function(p) {
   }
 
   p.setup = function() {
-    p.createCanvas(256, 256);
+    let ww = window.innerWidth,
+    hh = window.innerHeight;
+      
+    p.createCanvas(256*ww/hh, 256);
     p.reset("hello");
     p.loadFont('assets/FutuBd_.ttf', p.resetFont);
   };
@@ -342,7 +345,7 @@ var vao_desc = [
 
   var input_image_tex = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, input_image_tex);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 512, 512, 0, gl.RGBA, gl.UNSIGNED_BYTE, input_image);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 512*window.innerWidth/window.innerHeight, 512, 0, gl.RGBA, gl.UNSIGNED_BYTE, input_image);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
@@ -378,8 +381,12 @@ function render(gl, state, timestamp_millis) {
   count++;
   //input_image.src = './assets/fingerprint.png';
   input_image.onload = function (){
+    
+    let ww = window.innerWidth,
+    hh = window.innerHeight;
+
     gl.bindTexture(gl.TEXTURE_2D, input_image_tex);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 512, 512, 0, gl.RGBA, gl.UNSIGNED_BYTE, input_image);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, 512*window.innerWidth/window.innerHeight, 512, 0, gl.RGBA, gl.UNSIGNED_BYTE, input_image);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     state.input_image = input_image_tex;
@@ -516,6 +523,8 @@ function repositionCanvas(canvas){
     else{
       canvas.width = Math.min(ww, hh) - 130;
       canvas.height = Math.min(ww, hh) - 130;
+      canvas.width = ww - 130;
+      canvas.height = hh - 130;
     }
 
     canvas.style.position = 'absolute';
